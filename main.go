@@ -49,6 +49,7 @@ func main() {
 	// Set up channel on which to send signal notifications.
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
+	fmt.Println("Arreglandome el copete")
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
 
@@ -75,6 +76,7 @@ func tweet(api *anaconda.TwitterApi, frases []string) {
 		results, _ := api.GetUserTimeline(v)
 		if results[0].Text != frases[randi] {
 			api.PostTweet(frases[randi], nil)
+			fmt.Printf("Tweedted: %s\n", frases[randi])
 		}
 	}
 
