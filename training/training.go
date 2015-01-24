@@ -14,7 +14,7 @@ func main() {
 	anaconda.SetConsumerSecret(os.Getenv("APISECRET"))
 	api := anaconda.NewTwitterApi(os.Getenv("ACCESSTOKEN"), os.Getenv("ACCESSTOKENSECRET"))
 	v := url.Values{}
-	v.Set("count", "300")
+	v.Set("count", "1000")
 	searchResult, err := api.GetSearch("epn", v)
 
 	if err != nil {
@@ -24,9 +24,15 @@ func main() {
 	f, err := os.Create("seeds.txt")
 	defer f.Close()
 	buffer := bytes.Buffer{}
+	lastTweet := ""
 	for _, tweet := range searchResult.Statuses {
-		tweetbytes := []byte(fmt.Sprintf(`"%s"\n`, tweet.Text))
-		buffer.Write(tweetbytes)
+		if lastTweet != tweet.Text {
+			tweetbytes := []byte(fmt.Sprintf("\"%s\"\n", tweet.Text))
+			buffer.Write(tweetbytes)
+			lastTweet = tweet.Text
+		} else {
+			lastTweet = tweet.Text
+		}
 	}
 	f.Write(buffer.Bytes())
 	f.Sync()
