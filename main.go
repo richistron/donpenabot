@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"net/url"
 	"os"
-	"os/signal"
 	"time"
 
+	"code.google.com/p/goauth2/oauth/jwt"
+
+	prediction "code.google.com/p/google-api-go-client/prediction/v1.6"
 	"github.com/ChimeraCoder/anaconda"
 )
 
@@ -39,17 +43,32 @@ func main() {
 		"Las mujeres también son seres humanos",
 	}
 	api := initializeAPI()
+
+	token := createToken()
+
+	if transport, err := jwt.NewTransport(token); err == nil {
+		service, err := prediction.New(transport.Client())
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		models := service.Trainedmodels.List("premium-ember-835")
+		fmt.Printf("%#v\n", models)
+
+	}
+
 	go tweet(api, frases)
 	// Set up channel on which to send signal notifications.
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill)
+	fmt.Println("Arreglandome el copete")
+	http.HandleFunc("/", handler)
 
-	// Block until a signal is received.
-	s := <-c
-	fmt.Println("Got signal:", s)
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+}
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello, world!")
 }
 
 func initializeAPI() *anaconda.TwitterApi {
@@ -69,6 +88,7 @@ func tweet(api *anaconda.TwitterApi, frases []string) {
 		results, _ := api.GetUserTimeline(v)
 		if results[0].Text != frases[randi] {
 			api.PostTweet(frases[randi], nil)
+			fmt.Printf("Tweedted: %s\n", frases[randi])
 		}
 	}
 
@@ -77,4 +97,18 @@ func tweet(api *anaconda.TwitterApi, frases []string) {
 func randint(length int) int {
 	rand.Seed(time.Now().UTC().UnixNano())
 	return rand.Intn(length)
+}
+
+func createToken() *jwt.Token {
+	// Craft the ClaimSet and JWT token.
+	pemKeyBytes, err := ioutil.ReadFile("pkey.pem")
+	if err != nil {
+		panic(err)
+	}
+
+	iss := "621740100651-7lkhc3notki0lce8ps60tf2ddk8je1p7@developer.gserviceaccount.com"
+	scope := "https://www.googleapis.com/auth/prediction"
+	t := jwt.NewToken(iss, scope, pemKeyBytes)
+
+	return t
 }
