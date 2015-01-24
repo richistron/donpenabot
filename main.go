@@ -50,10 +50,13 @@ func main() {
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
 	fmt.Println("Arreglandome el copete")
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World"))
-	})
-	http.ListenAndServe(os.Getenv("PORT"), nil)
+	http.HandleFunc("/", handler)
+
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello, world!")
 }
 
 func initializeAPI() *anaconda.TwitterApi {
