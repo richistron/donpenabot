@@ -1,1 +1,1 @@
-web: demoapp
+web: speedy-bible -port=$PORT
