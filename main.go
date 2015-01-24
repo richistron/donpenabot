@@ -24,7 +24,19 @@ func main() {
 		"Si no recuerda algo diga que en su momento lo precisó.",
 		"Si quiere saber la verdad lea libros sobre las mentiras de otros libros.",
 		" El desarrollo económico impulsa el desarrollo económico.",
-		"Como ya lo ha comentado el presidente de Francia, los temas tratados fueron varios, abordando distintos temas",
+		"Como ya lo ha comentado el presidente de Francia, los temas tratados fueron varios, abordando distintos temas.",
+		"¿Omelette du fromage? ¡Omelette du fromage! Omelette. Du. Fromage. ¡Omelette du fromage!",
+		"La oposición dice que me vaya a mi casa: ¿A cuál? Tengo veinte",
+		"Hay que tener una política exterior orientada hacia el extranjero",
+		"No sé si voy a sacar el país del problema económico. Pero seguro que voy a hacer un país más divertido.",
+		"Yo prefiero estar muerto antes que perder la vida.",
+		"Si te despiden, te quedas sin empleo al ciento por ciento.",
+		"¿Ustedes también tienen negros?",
+		"Acá no se trata de sacarle a los ricos para darle a los pobres, como hacía Robinson Crusoe.",
+		"Me gustan mucho los libros de Gael Garcia Márquez.",
+		"Ni nos beneficia, ni nos perjudica, si no todo lo contrario.",
+		"Mi favorito es la “La Iliada” de Homero Simpson.",
+		"Las mujeres también son seres humanos",
 	}
 	api := initializeAPI()
 	go tweet(api, frases)
