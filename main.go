@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"net/url"
 	"os"
-	"os/signal"
 	"time"
 
 	"code.google.com/p/goauth2/oauth/jwt"
@@ -50,13 +50,10 @@ func main() {
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
 	fmt.Println("Arreglandome el copete")
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill)
-
-	// Block until a signal is received.
-	s := <-c
-	fmt.Println("Got signal:", s)
-
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello World"))
+	})
+	http.ListenAndServe(os.Getenv("PORT"), nil)
 }
 
 func initializeAPI() *anaconda.TwitterApi {
