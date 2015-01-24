@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/ChimeraCoder/anaconda"
 )
@@ -27,7 +28,25 @@ func main() {
 	lastTweet := ""
 	for _, tweet := range searchResult.Statuses {
 		if lastTweet != tweet.Text {
-			tweetbytes := []byte(fmt.Sprintf("\"%s\"\n", tweet.Text))
+			text := tweet.Text
+			hashtags := ""
+			urls := ""
+			if len(tweet.Entities.Hashtags) > 0 {
+				for _, hash := range tweet.Entities.Hashtags {
+					hashtags = (hashtags + hash.Text + " ")
+				}
+			} else {
+				hashtags = "none"
+			}
+			if len(tweet.Entities.Urls) > 0 {
+				for _, url := range tweet.Entities.Hashtags {
+					urls = (urls + url.Text + " ")
+				}
+			} else {
+				urls = "none"
+			}
+
+			tweetbytes := []byte(fmt.Sprintf("\"%s\",\"%v\",\"%v\"\n", text, strings.TrimSpace(hashtags), strings.TrimSpace(urls)))
 			buffer.Write(tweetbytes)
 			lastTweet = tweet.Text
 		} else {
