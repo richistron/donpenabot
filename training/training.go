@@ -28,7 +28,6 @@ func main() {
 	lastTweet := ""
 	for _, tweet := range searchResult.Statuses {
 		if lastTweet != tweet.Text {
-			text := tweet.Text
 			hashtags := ""
 			urls := ""
 			if len(tweet.Entities.Hashtags) > 0 {
@@ -39,14 +38,16 @@ func main() {
 				hashtags = "none"
 			}
 			if len(tweet.Entities.Urls) > 0 {
-				for _, url := range tweet.Entities.Hashtags {
-					urls = (urls + url.Text + " ")
+				for _, url := range tweet.Entities.Urls {
+					fmt.Println(url.Display_url)
+					urls = (urls + url.Display_url + " ")
 				}
 			} else {
 				urls = "none"
 			}
-
-			tweetbytes := []byte(fmt.Sprintf("\"%s\",\"%v\",\"%v\"\n", text, strings.TrimSpace(hashtags), strings.TrimSpace(urls)))
+			text := strings.Replace(tweet.Text, "\"", "\\\"", -1)
+			text = strings.Replace(text, "\n", "", -1)
+			tweetbytes := []byte(fmt.Sprintf("\"%s\",\"%s\",\"%s\"\n", text, strings.TrimSpace(hashtags), urls))
 			buffer.Write(tweetbytes)
 			lastTweet = tweet.Text
 		} else {
