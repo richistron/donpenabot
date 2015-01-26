@@ -13,6 +13,7 @@ import (
 
 	prediction "code.google.com/p/google-api-go-client/prediction/v1.6"
 	"github.com/ChimeraCoder/anaconda"
+	"github.com/anaconda-test/autoresponder"
 )
 
 func main() {
@@ -58,6 +59,7 @@ func main() {
 	}
 
 	go tweet(api, frases)
+	go autoresponder.Respond(api)
 	// Set up channel on which to send signal notifications.
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
