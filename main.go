@@ -42,6 +42,7 @@ func main() {
 		"Ni nos beneficia, ni nos perjudica, si no todo lo contrario.",
 		"Mi favorito es la “La Iliada” de Homero Simpson.",
 		"Las mujeres también son seres humanos",
+		"No podemos quedarnos arapados en el presente",
 	}
 	api := initializeAPI()
 
