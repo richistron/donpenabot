@@ -13,7 +13,7 @@ import (
 
 	prediction "code.google.com/p/google-api-go-client/prediction/v1.6"
 	"github.com/ChimeraCoder/anaconda"
-	"github.com/anaconda-test/autoresponder"
+	"github.com/donpenabot/autoresponder"
 )
 
 func main() {
