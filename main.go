@@ -43,6 +43,7 @@ func main() {
 		"Mi favorito es la “La Iliada” de Homero Simpson.",
 		"Las mujeres también son seres humanos",
 		"No podemos quedarnos arapados en el presente",
+		"Ya sé que no aplauden",
 	}
 	api := initializeAPI()
 
